@@ -40,7 +40,11 @@ vif(m1)
 
 # Introduction
 
-Skeletal muscles contain hundreds to thousands of myonuclei, each of them residing over a ... 
+Skeletal muscles contain hundreds to thousands of myonuclei, each of them governing a finite amount of cytpolasms within the myofiber
+
+Our research question: Does baseline myonuclear density predict the hypertrophic response in the quadriceps following a 6-week progressive volume RT-protocol?
+
+Alternative hypothesis: Baseline myonuclear density predicts the hypertrophic response following a 6-week progressive volume RT-protocol. Due to the heterogeneity of the studies in the field, we are not assuming a directionality of the effect. This study is exploratory, and intended for hypothesis generation. 
 
 # Methods 
 
