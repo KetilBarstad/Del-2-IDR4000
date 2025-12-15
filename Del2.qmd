@@ -1,0 +1,63 @@
+---
+title: "Del 2: What effect does baseline myonuclear number have on type-I and type-II myofiber hypertrophy following a 6-week progressive volume RT-protocol?"
+author: "Ketil Barstad"
+date: 2025-11-18
+bibliography: references.bib
+csl: vancouver.csl
+link-citations: true
+format:
+  pdf:
+    pdf-engine: xelatex
+    mainfont: "TeX Gyre Pagella"
+toc: true
+toc-title: Innholdsfortegnelse
+toc-depth: 3
+toc-expand: true
+number-sections: true
+---
+
+```{r}
+#Last inn pakkene og datasettet vi skal bruke
+library(tidyverse)
+library(exscidata)
+library(car)
+view(hypertrophy)
+```
+
+```{r}
+
+hypertrophy |>
+  select(PARTICIPANT, contains("NUCLEI"), contains("CSA"), contains("VL_")) |>
+  summary()
+
+m1 <- lm(VL_T3 ~ VL_T1 + FAST_NUCLEI_T1 + SLOW_NUCLEI_T1, data = hypertrophy)
+
+summary(m1)
+
+vif(m1)
+
+```
+
+# Introduction
+
+Skeletal muscles contain hundreds to thousands of myonuclei, each of them residing over a ... 
+
+# Methods 
+
+## Baseline characteristics of participants
+
+## Resistance-training protocol 
+
+## Myonuclear number determination
+
+# Statistical analysis
+
+## Rationale for use of model 
+
+# Results
+
+# Discussion
+
+## Limitations 
+
+# Konklusjon
