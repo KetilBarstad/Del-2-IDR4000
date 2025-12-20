@@ -1,5 +1,5 @@
 ---
-title: "Del 2: What effect does baseline myonuclear number have on type-I and type-II myofiber hypertrophy following a 6-week progressive volume RT-protocol?"
+title: "Del 2: Does baseline myonuclear density in type-1 and type-2 muscle fibers predict the hypertrophy response following a 6-week RT-protocol in trained, young men?"
 author: "Ketil Barstad"
 date: 2025-11-18
 bibliography: references.bib
@@ -10,41 +10,46 @@ format:
     pdf-engine: xelatex
     mainfont: "TeX Gyre Pagella"
 toc: true
-toc-title: Innholdsfortegnelse
+toc-title: Table of contents 
 toc-depth: 3
 toc-expand: true
 number-sections: true
 ---
 
 ```{r}
-#Last inn pakkene og datasettet vi skal bruke
+#| include: false
+#Load in the packages and dataset we will be using 
 library(tidyverse)
 library(exscidata)
 library(car)
 view(hypertrophy)
 ```
 
-```{r}
+\newpage
 
-hypertrophy |>
-  select(PARTICIPANT, contains("NUCLEI"), contains("CSA"), contains("VL_")) |>
-  summary()
+# Abstract
 
-m1 <- lm(VL_T3 ~ VL_T1 + FAST_NUCLEI_T1 + SLOW_NUCLEI_T1, data = hypertrophy)
+**Background:**
 
-summary(m1)
+**Methods:**
 
-vif(m1)
+**Results:**
 
-```
+**Conclusion:**
 
 # Introduction
 
-Skeletal muscles contain hundreds to thousands of myonuclei, each of them governing a finite amount of cytpolasms within the myofiber
+Resistance training (RT) is an effective method to induce skeletal muscle hypertrophy [@robertsMechanismsMechanicalOverloadinduced2023b]. However, the individual responses to the same RT-protocol can vary greatly. Research has shown a wide array of responses when it comes to improvements in skeletal muscle hypertrophy, maximal strength and metabolic markers of health [@erskineInterindividualVariabilityAdaptation2010; @ahtiainenInterindividualVariationResponse2020]. There have been several proposed mechanisms as to why this inter-individual response exists, and includes but is not limited to genetics, epigenetics and environmental factors (sleep, stress and dietary patterns) [@rossPrecisionExerciseMedicine2019]. 
 
-Our research question: Does baseline myonuclear density predict the hypertrophic response in the quadriceps following a 6-week progressive volume RT-protocol?
+Within genetics, the myonuclei are thought to play a major role in the process of skeletal muscle hypertrophy [@snijdersChangesMyonuclearDomain2016]. Skeletal myofibres are multinucleated cells, each of them containing hundreds to thousands of myonuclei. Each one of these myonuclei govern a finite amount of cytoplasm and serve an important function for enhancing both gene transcription and protein synthesis [@snijdersChangesMyonuclearDomain2016]. In the early stages of hypertrophy, myonuclei can expand their domains to accommodate the initial rate of growth, also known as myonuclear expansion [@petrellaPotentMyofiberHypertrophy2008]. Beyond a certain threshold, it has been hypothesized that quiescent satellite cells (SC) must proliferate and differentiate into new myonuclei to facilitate further skeletal muscle hypertrophy. This concept is also known as myonuclear accretion. However, this concept remains controversial, and the research is equivocal as to whether this threshold exists [@murachMyonuclearDomainFlexibility2018a].
 
-Alternative hypothesis: Baseline myonuclear density predicts the hypertrophic response following a 6-week progressive volume RT-protocol. Due to the heterogeneity of the studies in the field, we are not assuming a directionality of the effect. This study is exploratory, and intended for hypothesis generation. 
+There has been extensive research on the roles of myonuclei accretion and expansion for skeletal muscle hypertrophy. Petrella and colleagues in 2008 found that the differences in hypertrophy between high and low responders to RT can be explained by the degree of myonuclear accretion [@petrellaPotentMyofiberHypertrophy2008]. However, Haun and colleagues found no group differences in pre- to post-measurements in myonuclear density following a 6-week RT-protocol, despite significant differences in measured hypertrophy [@haunPretrainingSkeletalMuscle2019]. There is also other literature challenging the notion that myonuclear accretion is associated with skeletal muscle hypertrophy [@mobleyBiomarkersAssociatedLow2018].
+
+On the topic of myonuclear expansion, Petrella and their group has suggested that there exists a maximum ceiling for how much the domains of individual myonuclei can expand to [@petrellaPotentMyofiberHypertrophy2008]. This consequently led to the suggestion that a fibre size increase of more than ~26-27% must be accompanied by myonuclear accretion [@petrellaEfficacyMyonuclearAddition2006]. The research here is also diverging, as another group of researchers found significant myonuclear accretion without myonuclear expansion, despite the type-II fibres of the participants growing with more than 40% from pre- to post-measurements [@snijdersChangesMyonuclearDomain2016]. 
+
+The question of whether baseline myonuclear density in type-I and type-II myofibres predict the magnitude of the hypertrophic response following RT remains unclear. Previous research has found association between baseline myonuclear *number* in type-I and type-II and the hypertrophic response following a 12-week RT protocol in young, untrained men [@mobleyBiomarkersAssociatedLow2018]. Another study found a moderate correlation between satellite cell count and myofibre growth [@petrellaPotentMyofiberHypertrophy2008]. This brings us to the study performed by Haun’s research group from 2019 on young, trained males, with their data suggesting that pre- and W3 values of type-I myonuclear number was a significant predictor of hypertrophy. While the researchers performed baseline testing of the participants myonuclear density of type-I and type-II fibres, it was not used in the final analysis. Since there is divergent research on whether myonuclear accretion occurs in the presence of significant hypertrophy, an unexplored baseline predictor to examine is *myonuclear density*, i.e the amount of myonuclei per cross-sectional area. A logical assumption would be that a increased baseline myonuclear density would reflect a greater transcriptional machinery, thus allowing for a superior hypertrophic response to RT.
+
+The aim of this study was to analyse the data from the experimental study performed by Haun and colleagues [@haunPretrainingSkeletalMuscle2019] and perform an observational study to determine whether baseline myonuclear density in type-I and type-II fibres is predictive of the hypertrophic response following a 6-week resistance-training protocol in young, trained men. We hypothesize a positive association between myonuclear density in both type-I and type-II fibres and hypertrophy in vastus lateralis muscle thickness, as greater myonuclear density is reflective of increased transcriptional capacity and protein synthesis. 
 
 # Methods 
 
@@ -54,9 +59,24 @@ Alternative hypothesis: Baseline myonuclear density predicts the hypertrophic re
 
 ## Myonuclear number determination
 
-# Statistical analysis
+## Statistical analysis
 
-## Rationale for use of model 
+Modellen først. Normalfordeling, residualplot --> avvik fra residualene er normalfordelt
+Shapiro wilk??
+
+datasett$resid resid()
+
+plot it
+
+
+
+## Model assumptions (residualplot, shapiro-wilk)
+
+### Rationale for use of model 
+
+ANCOVA - Controlling for baseline differences in CSA. 
+
+Why did you not choose x or y instead?
 
 # Results
 
@@ -64,4 +84,15 @@ Alternative hypothesis: Baseline myonuclear density predicts the hypertrophic re
 
 ## Limitations 
 
-# Konklusjon
+Outcome variable 
+
+Limited ecological validity 
+
+Inability to establish causality with an observational design. 
+
+# Conclusion 
+
+
+\newpage
+
+# Bibliography
