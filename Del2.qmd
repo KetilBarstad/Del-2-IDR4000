@@ -27,6 +27,7 @@ library(tidyverse)
 library(exscidata)
 library(car)
 library(gt)
+library(lme4)
 hypertrophy <- read_csv("data/hypertrophy.csv")
 ```
 
@@ -58,9 +59,9 @@ The aim of this study was to analyse the data from the experimental studies perf
 
 # Materials and methods 
 
-The data in the study were obtained from Haun and colleagues study in 2018 [@haunEffectsGradedWhey2018]. They recruited 34 young, trained males (aged 21.48 ± 2.13) with previous RT-experience (5 ± 3 years). See table 1 for more information on the participants. The full details of the participants RT-protocol and supplementation is described elsewhere [@haunPretrainingSkeletalMuscle2019; @haunEffectsGradedWhey2018]. Briefly, the participants performed a six week RT-protocol with progressive volume increases. The program was performed 3d/week, with each session consisting of two upper-body and two lower-body exercises. The starting volume for each exercise was 10 sets/exercise in week one, and was progressively increased each week until 32 sets/exercise in week six. Functional cross-sectional area (fCSA) of both type-I and type-II fibres was assessed via immunohistochemistry from vastus lateralis biopsies at baseline (T1) and post-intervention (T3). Myonuclear density was also determined via immunohistochemistry. Samples were obtained, cut and then stained with dystrophin antibody solution to identify fiber boundaries. Myonuclear density was determined for both type-I and type-II fibres. The reader is referred to the original study for full details on the methodology used [@haunPretrainingSkeletalMuscle2019].
+The data in the study were obtained from Haun and colleagues study in 2018 [@haunEffectsGradedWhey2018]. They recruited 34 young, trained males (aged 21.48 ± 2.13) with previous RT-experience (5 ± 3 years). See table 1 for more information on the participants, retrieved from the studies [@haunPretrainingSkeletalMuscle2019; @haunEffectsGradedWhey2018]. Briefly, the participants performed a six week RT-protocol with progressive volume increases. The program was performed 3d/week, with each session consisting of two upper-body and two lower-body exercises. The starting volume for each exercise was 10 sets/exercise in week one, and was progressively increased each week until 32 sets/exercise in week six. Both functional cross-sectional area (fCSA) and myonuclear density of both type-I and type-II fibres was assessed via immunohistochemistry from vastus lateralis biopsies at three different time points: baseline (T1), midway through the intervention (T2) and post-intervention (T3). Samples were obtained, cut and then stained with dystrophin antibody solution to identify fiber boundaries. Myonuclear density was determined for both type-I and type-II fibres. The reader is referred to the original study for full details on the methodology used [@haunPretrainingSkeletalMuscle2019].
 
-After accounting for participant drop-out and missing values, 31 participants were included in their final dataset, which were included in our study's analysis. 
+After accounting for participant drop-out and missing values, 30 participants were included in their final dataset, which were used in our study's analysis. 
 
 ## Table of baseline characteristics of participants
 
@@ -76,13 +77,17 @@ hypertrophy %>%
     height = paste0(round(mean(HEIGHT, na.rm = TRUE), 1), " ± ", round(sd(HEIGHT, na.rm = TRUE), 1)),
     mass = paste0(round(mean(BODYMASS_T1, na.rm = TRUE), 1), " ± ", round(sd(BODYMASS_T1, na.rm = TRUE), 1)),
     training = paste0(round(mean(TRAINING_AGE, na.rm = TRUE), 1), " ± ", round(sd(TRAINING_AGE, na.rm = TRUE), 1)),
-    fcsa = paste0(round(mean(FAST_CSA_T1, na.rm = TRUE), 0), " ± ", round(sd(FAST_CSA_T1, na.rm = TRUE), 0)),
-    nuclei = paste0(round(mean(FAST_NUCLEI_T1, na.rm = TRUE), 2), " ± ", round(sd(FAST_NUCLEI_T1, na.rm = TRUE), 2))
+    fcsa_fast = paste0(round(mean(FAST_CSA_T1, na.rm = TRUE), 0), " ± ", round(sd(FAST_CSA_T1, na.rm = TRUE), 0)),
+    nuclei_fast = paste0(round(mean(FAST_NUCLEI_T1, na.rm = TRUE), 2), " ± ", round(sd(FAST_NUCLEI_T1, na.rm = TRUE), 2)),
+    fcsa_slow = paste0(round(mean(SLOW_CSA_T1, na.rm = TRUE), 0), " ± ", round(sd(SLOW_CSA_T1, na.rm = TRUE), 0)),
+    nuclei_slow = paste0(round(mean(SLOW_NUCLEI_T1, na.rm = TRUE), 2), " ± ", round(sd(SLOW_NUCLEI_T1, na.rm = TRUE), 2))
   ) %>%
   pivot_longer(everything(), names_to = "Variable", values_to = "Value") %>%
   mutate(Variable = c("n", "Age (years)", "Height (cm)", "Body mass (kg)", 
-                      "Training age (years)", "Type II fCSA (μm²)", 
-                      "Type II myonuclei (per fiber)")) %>%
+                      "Training age (years)", "Baseline Type II fCSA (μm²)", 
+                      "Baseline Type II myonuclei density (nuclei/fiber",
+                      "Baseline Type I fCSA (μm²)",
+                      "Baseline Type I myonuclei density (nuclei/fiber")) %>%
   gt() %>%
   cols_label(Variable = "Variable", Value = "Mean ± SD") %>%
   tab_options(
@@ -94,33 +99,247 @@ hypertrophy %>%
 
 ## Statistical analysis
 
-All statistical analyses were performed using R (version 4.5.1) in Rstudio (version 2025.09.2) using a frequentist framework. For information regarding the packages within R used for statistical analyses, see Del2.qmd file found within the GitHub repository. 
+All statistical analyses were performed using R (version 4.5.1) in Rstudio (version 2025.09.2) using a frequentist framework. The R-packages used for statistical analysis was the *lme4* package. For complete information regarding the R-packages used throughout the study, see Del2.qmd file found within the GitHub repository. 
 
 **Statistical approach**
 
-Changes in functional cross-sectional area from T1 to T3 was determined with a one-way ANCOVA, with baseline values of fCSA serving as covariates. We specified two models, one for type-I myofibres and one for type-II myofibres. The strength of an ANCOVA model is the ability to control for differing baseline values between participants, which is often the case when it comes to variables such as baseline muscle mass, even between trained individuals [@erskineInterindividualVariabilityAdaptation2010]. By reducing the influence of confounding variables, it makes the comparison more accurate. This also gives it a distinct advantage over an ANOVA in our case, seeing as an ANOVA would not be able to adjust for baseline muscle mass. 
+The primary estimand of interest was the **time x myonuclear density** interaction effect, which was determined by fitting the data to a linear-mixed effect model (LMM). We fit two different LMMs: one for type-II myofibres (FAST), and one for type-I myofibres (SLOW). The rationale for choosing an LMM was threefold. Firstly, an LMM allows us to handle dependent data points with more flexibility than models such as ANOVA or ANCOVA. In the dataset, fCSA was measured at three different time points (T1, T2 and T3). This also allows us to model the trajectory of change over time. The second key advantage of the LMM, is the ability to assign a random intercept for each participant. This is particularly useful, since it is evident from the dataset that baseline fCSA in the vastus lateralis is not equal across the participants. And thirdly, it allows the model to leverage shrinkage. This has the benefits of pulling each individual participants estimate closer towards the group mean, allowing for more accurate predictions by accounting for outliers in the dataset. Time was treated as a numeric factor given that we expect a linear relation between observed hypertrophy and the short intervention period of six-weeks. 
 
-We choose this over a Pearson's correlation test, since an ANCOVA can not only determine directionality of the relationship between dependent and independent variable, but also how much a change in pre-values of the independent variable will affect our outcome variable. 
- 
-A potential option was using a linear mixed-effect model (LMM), but we choose not to because of several reasons. 
-
-Our choice of one covariate per model, is based on our available data and an n = 30. 
+Several statistical approaches were considered but ultimately discarded. A simple change score in pre- to post-measurements of fCSA was an alternative, but this option does not consider differing baseline values of fCSA impacting our outcome variable. It also does not allow us to incorporate multiple measurement points into the model. A repeated measures ANOVA was also considered, as it could allow us to model change score from pre- to post with multiple measurement points. However, since our predictor variable is continuous and not categorical, it would require us to cluster the participants into arbitrary groups based on their baseline myonuclear density values. An ANCOVA model was also an option, seeing as we could control for different baseline values of fCSA with a covariate. However, this model would also require us to discard the T2-timepoint measurement or employing multiple models. The LMM was consequently chosen, seeing at it satisfies all our requirements: our three different measurements points of fCSA (T1 – T3), a continuous predictor variable in baseline myonuclear density and the model can account for differences in baseline values of fCSA with random intercepts for each participant. 
 
 **Variables for analysis**
 
-Our first model, M_type1, assessed myonuclear density in type-II myofibres. The outcome variable in this model was type-II fCSA at T3 (post-measurement). We chose this outcome variable over muscle thickness measured by ultrasound and lean-mass measured by DXA, seeing as our hypothesis regarding myonuclear density was related to the cellular level. Therefore, to make appropriate inferences from our model, our outcome variable should also be at the cellular level. Our independent variable in M1 was FAST_NUCLEI_T1, i.e. myonuclear density at baseline. Our covariate of choice is baseline fCSA of type-II myofibres, FAST_CSA_T1. 
+We chose to split our statistical analysis into two separate models for each fibre type, seeing as the baseline densities were different and that type-II fibres have a much larger growth potential than type-I fibres [@haunPretrainingSkeletalMuscle2019]. Both models used fCSA measured at three different time points (T1, T2 and T3) as the outcome variable, while our predictor variable was only baseline myonuclear density (T1). 
 
-Our second model, M_type2, assessed myonuclear density in type-I myofibres. The outcome variable in this model was type-I fCSA at T3. The independent variable was SLOW_NUCLEI_T1. Our covariate of choice was baseline fCSA of type-II myofibres, FAST_CSA_T1. The reader is referred to section 5 for further discussion regarding the outcome variables, and how interpreted the results.
+Our first model, FAST, examined type-II myofibres. The primary estimand of interest was the interaction between time and baseline myonuclear density in type-II myofibres to predict the rate of change in fCSA. 
 
-**Sensitivity power analysis**
+Our second model, SLOW, examined type-I myofibres. The primary estimand of interest was the interaction between time and baseline myonuclear density in type-I myofibres  to predict the rate of change in fCSA. The rationale for fCSA as our hypertrophy outcome is because our hypothesis is at the cellular level. Therefore, a logical extension would be to assess changes in hypertrophy at the cellular level. However, we do acknowledge that there exist several limitations to this approach compared to whole-muscle outcomes such as lean mass measured by DEXA or muscle thickness measured by B-mode ultrasound. The reader is referred to section 5 for further discussion regarding interpretation of the outcome variable. 
 
-**Model assumptions (residualplot, shapiro-wilk)**
+**Statistical power**
 
-datasett$resid resid()
+Haun reported that with a sample of n = 29 participants, 2 predictors, $\alpha$ = 0.05 and  1 - $\beta$ = 0.8, their minimum detecable effect size was f^2 = 0.35. The researchers acknowledged that the study design was underpowered to detect small but significant effects [@haunPretrainingSkeletalMuscle2019]. However, since Haun employed a stepwise linear regression, this power calculation does not directly apply to our LMM.  
 
+Since we employed an LMM, we focused on effect estimates, standard errors (SE) and confidence intervals (CIs) rather than relying on statistical significance to aid with interpretation. 
+
+**Testing our model assumptions**
+
+Our LMM assumes that our residuals are normally distributed around zero, and that they do not differ across the fitted values. @fig-residuals visualises the residual vs. fitted values for both of our models, respectively. The residuals appear randomly scattered around zero, suggesting homoscedasticity for both of our models. @fig-qq indicated that our residuals were approximalte normally distributed. We see some slight deviations at the tail-end of the distributions, but this is to be expected with extreme values and a small sample such as ours (n = 30). 
+
+```{r}
+#| include: false
+
+
+# Reshaping our data to fit FAST model
+df_long_fast <- hypertrophy %>%
+  select(PARTICIPANT, FAST_NUCLEI_T1, FAST_CSA_T1, FAST_CSA_T2, FAST_CSA_T3) %>%
+  pivot_longer(
+    cols = c(FAST_CSA_T1, FAST_CSA_T2, FAST_CSA_T3),
+    names_to = "timepoint",
+    values_to = "fCSA"
+  ) %>%
+  mutate(time = case_when(
+    timepoint == "FAST_CSA_T1" ~ 0,
+    timepoint == "FAST_CSA_T2" ~ 3,
+    timepoint == "FAST_CSA_T3" ~ 6
+  ))
+
+# Reshaping our data to fit SLOW  model
+df_long_slow <- hypertrophy %>%
+  select(PARTICIPANT, SLOW_NUCLEI_T1, SLOW_CSA_T1, SLOW_CSA_T2, SLOW_CSA_T3) %>%
+  pivot_longer(
+    cols = c(SLOW_CSA_T1, SLOW_CSA_T2, SLOW_CSA_T3),
+    names_to = "timepoint",
+    values_to = "fCSA"
+  ) %>%
+  mutate(time = case_when(
+    timepoint == "SLOW_CSA_T1" ~ 0,
+    timepoint == "SLOW_CSA_T2" ~ 3,
+    timepoint == "SLOW_CSA_T3" ~ 6
+  ))
+
+# The models
+FAST <- lmer(fCSA ~ time * FAST_NUCLEI_T1 + (1 | PARTICIPANT), data = df_long_fast)
+SLOW <- lmer(fCSA ~ time * SLOW_NUCLEI_T1 + (1 | PARTICIPANT), data = df_long_slow)
+
+```
+
+```{r}
+#| echo: false
+#| label: fig-residuals
+#| fig-cap: "Residuals versus fitted values for FAST (Type-II fibres, left) and SLOW (Type-I fibres, right)."
+#| fig-width: 7
+#| fig-height: 4
+
+par(mfrow = c(1, 2))
+
+plot(fitted(FAST), resid(FAST), 
+     main = "FAST: Type-II fibres", 
+     xlab = "Fitted values (µm²)", 
+     ylab = "Residuals (µm²)")
+abline(h = 0, col = "red")
+
+plot(fitted(SLOW), resid(SLOW), 
+     main = "SLOW: Type-I fibres", 
+     xlab = "Fitted values (µm²)", 
+     ylab = "Residuals (µm²)")
+abline(h = 0, col = "red")
+
+par(mfrow = c(1, 1))
+
+
+```
+```{r}
+#| echo: false
+#| label: fig-qq
+#| fig-cap: "Q-Q plots for FAST (Type-II fibres, left) and SLOW (Type-I fibres, right)"
+#| fig-width: 6
+#| fig-height: 3
+
+##Q-Q plots
+par(mfrow = c(1, 2))
+
+qqnorm(resid(FAST), main = "FAST: Type-II fibres")
+qqline(resid(FAST), col = "red")
+
+qqnorm(resid(SLOW), main = "SLOW: Type-I fibres")
+qqline(resid(SLOW), col = "red")
+
+par(mfrow = c(1, 1))
+```
 # Results
 
-**Fit the model?**
+**Descriptive statistics**
+
+```{r}
+#| include: false
+
+# FAST model parameters
+summary(FAST)$coefficients
+
+confint(FAST)
+
+# SLOW model parameters
+summary(SLOW)$coefficients
+
+confint(SLOW)
+```
+
+
+```{r}
+#| label: tbl-fixed
+#| echo: false
+#| message: false
+#| warning: false
+#| tbl-cap: "Table of model parameters for FAST (type-II) and SLOW (type-I)"
+
+
+# Create dataframe 
+fixed_effects_table <- data.frame(
+  Parameter = c("Intercept", "Time (weeks)", "Myonuclear density", 
+                "Time × myonuclear density"),
+  Type_II = c(
+    "3503.2 ± 378.1 [2770.7 to 4235.6]",
+    "-102.3 ± 67.2 [-233.8 to 29.3]",
+    "178.8 ± 133.6 [-80.0 to 437.6]",
+    "53.6 ± 23.7 [7.1 to 100.0]"
+  ),
+  Type_I = c(
+    "3006.4 ± 405.7 [2221.0 to 3791.8]",
+    "33.6 ± 77.8 [-118.7 to 186.0]",
+    "270.1 ± 151.6 [-23.4 to 563.7]",
+    "-11.0 ± 29.1 [-67.9 to 45.9]"
+  )
+)
+
+fixed_effects_table %>%
+  gt() %>%
+  cols_label(
+    Parameter = "",
+    Type_II = "FAST",
+    Type_I = "SLOW"
+  ) %>%
+  tab_options(
+    table.font.size = px(11),
+    heading.title.font.size = px(13),
+    table.width = pct(100)
+  ) %>%
+  tab_footnote(
+    footnote = "Values shown as estimate (μm²) ± SE [95% CI]."
+  )
+
+VarCorr(FAST)
+VarCorr(SLOW)
+
+```
+
+**Interaction effect between time and baseline myonuclear density** 
+
+The interaction effect time x baseline myonuclear density is our primary estimand for both models (see @tbl-fixed). All values in this section are reported as  estimate SE ±, [95% CI] unless stated otherwise. In model FAST, the interaction estimate between time x myonuclear density in type-II fibres was 53.6 (± 23.7, [7.1 to 100.0]). For each additional nucleus per type-II fibre at baseline, there was an increased weekly increase of 53.6 μm² in type-II fibres. However, the large SE and  wide CI means that there is a great degree of uncertainty tied to this estimate The CI does not cross zero, however, which indicates that there is a positive effect of having higher myonuclear density for hypetrophy outcomes. 
+
+In model SLOW, the interaction estimate between time x myonuclear density in type-I fibres was -11 (± 29.1, [-67.9 to 45.9]). For each increase in nucleus per type-I fibre at baseline, we observed a weekly decrease of 11 μm² in type-I fibres. The CI crosses zeero and the SE is larger than the estimate itself, which indicated that there is no clear association between baseline myonuclear density and hypetrophy in type-I fibres. 
+
+**Random effects**
+
+Random intercepts variance 
+
+Residual variance 
+
+**Secondary findings** 
+
+Intercepts, main effects of time and baseline myonuclear density are reported in @tbl-fixed. However, since these estimates represent the values when the predictor value is at zero, these estimates do not provide much information in isolation. 
+
+```{r}
+#| echo: false
+#| message: true
+#| warning: false
+mean(df_long_fast$FAST_NUCLEI_T1, na.rm = TRUE)
+sd(df_long_fast$FAST_NUCLEI_T1, na.rm = TRUE)
+
+mean(df_long_slow$SLOW_NUCLEI_T1, na.rm = TRUE)
+sd(df_long_slow$SLOW_NUCLEI_T1, na.rm = TRUE)
+
+# FAST model predictions
+pred_fast <- expand.grid(
+  time = c(0, 3, 6),
+  FAST_NUCLEI_T1 = c(2.63 - 1.06, 2.63, 2.63 + 1.06)  # low, mean, high
+)
+pred_fast$fCSA <- predict(FAST, newdata = pred_fast, re.form = NA)
+pred_fast$density_level <- rep(c("Low (-1 SD)", "Mean", "High (+1 SD)"), each = 3)
+
+# SLOW model predictions
+pred_slow <- expand.grid(
+  time = c(0, 3, 6),
+  SLOW_NUCLEI_T1 = c(2.49 - 0.98, 2.49, 2.49 + 0.98)
+)
+pred_slow$fCSA <- predict(SLOW, newdata = pred_slow, re.form = NA)
+pred_slow$density_level <- rep(c("Low (-1 SD)", "Mean", "High (+1 SD)"), each = 3)
+
+# Fiber type labels
+pred_fast$fiber_type <- "Type II"
+pred_slow$fiber_type <- "Type I"
+
+# Combine into one dataframe
+pred_all <- bind_rows(pred_fast, pred_slow)
+
+# Factor order for legend 
+pred_all$density_level <- factor(pred_all$density_level, 
+                                  levels = c("Low (-1 SD)", "Mean", "High (+1 SD)"))
+
+ggplot(pred_all, aes(x = time, y = fCSA, color = density_level, group = density_level)) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 2) +
+  facet_wrap(~fiber_type) +
+  labs(
+    x = "Time (weeks)",
+    y = "Predicted fCSA (μm²)",
+    color = "Baseline myonuclear density"
+  ) +
+  scale_x_continuous(breaks = c(0, 3, 6)) +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  theme_bw()
+```
+
 
 # Discussion
 
@@ -132,7 +351,7 @@ Limited ecological validity. The population of the study is highly homogenous, a
 
 Inability to establish causality with an observational design. 
 
-Pre-regristation?
+Pre-regristation? Philopsophy of science - We did not report p-values, even though we employed a frequentist framework. This is because we do not regard p-values as particularly useful when emplying an LMM. 
 
 # Conclusion 
 
