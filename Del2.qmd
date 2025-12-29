@@ -109,11 +109,11 @@ Several statistical approaches were considered but ultimately discarded. A simpl
 
 **Variables for analysis**
 
-We chose to split our statistical analysis into two separate models for each fibre type, seeing as the baseline densities were different and that type-II fibres have a much larger growth potential than type-I fibres [@haunPretrainingSkeletalMuscle2019]. Both models used fCSA measured at three different time points (T1, T2 and T3) as the outcome variable, while our predictor variable was only baseline myonuclear density (T1). 
+We chose to fit our statistical analysis into two separate models for each fibre type, seeing as the baseline densities were different and that type-II fibres have a much larger growth potential than type-I fibres [@haunPretrainingSkeletalMuscle2019]. Both models used fCSA measured at three different time points (T1, T2 and T3) as the outcome variable, while our predictor variable was only baseline myonuclear density (T1). The predictor variable was centered around the mean value of baseline myonuclear density for both models, to aid with interpretability of the coefficients of the model. 
 
-Our first model, FAST, examined type-II myofibres. The primary estimand of interest was the interaction between time and baseline myonuclear density in type-II myofibres to predict the rate of change in fCSA. 
+Our first model, FAST, examined type-II myofibres. The primary estimand of interest was the interaction between time and baseline myonuclear density in type-II myofibres to predict the rate of change in fCSA. Our second model, SLOW, examined type-I myofibres. The primary estimand of interest was the interaction between time and baseline myonuclear density in type-I myofibres  to predict the rate of change in fCSA. 
 
-Our second model, SLOW, examined type-I myofibres. The primary estimand of interest was the interaction between time and baseline myonuclear density in type-I myofibres  to predict the rate of change in fCSA. The rationale for fCSA as our hypertrophy outcome is because our hypothesis is at the cellular level. Therefore, a logical extension would be to assess changes in hypertrophy at the cellular level. However, we do acknowledge that there exist several limitations to this approach compared to whole-muscle outcomes such as lean mass measured by DEXA or muscle thickness measured by B-mode ultrasound. The reader is referred to section 5 for further discussion regarding interpretation of the outcome variable. 
+The rationale for fCSA as our hypertrophy outcome is because our hypothesis is at the cellular level. Therefore, a logical extension would be to assess changes in hypertrophy at the cellular level. However, we do acknowledge that there exist several limitations to this approach compared to whole-muscle outcomes such as lean mass measured by DEXA or muscle thickness measured by B-mode ultrasound. The reader is referred to section 5 for further discussion regarding interpretation of the outcome variable. 
 
 **Statistical power**
 
@@ -130,36 +130,42 @@ Our LMM assumes that our residuals are normally distributed around zero, and tha
 
 
 # Reshaping our data to fit FAST model
-df_long_fast <- hypertrophy %>%
-  select(PARTICIPANT, FAST_NUCLEI_T1, FAST_CSA_T1, FAST_CSA_T2, FAST_CSA_T3) %>%
+df_long_fast <- hypertrophy |>
+  select(PARTICIPANT, FAST_NUCLEI_T1, FAST_CSA_T1, FAST_CSA_T2, FAST_CSA_T3) |>
   pivot_longer(
     cols = c(FAST_CSA_T1, FAST_CSA_T2, FAST_CSA_T3),
     names_to = "timepoint",
     values_to = "fCSA"
-  ) %>%
+  ) |>
   mutate(time = case_when(
     timepoint == "FAST_CSA_T1" ~ 0,
     timepoint == "FAST_CSA_T2" ~ 3,
     timepoint == "FAST_CSA_T3" ~ 6
   ))
 
+#Centering our predictor variable around the mean value of baseline myonuclear density 
+df_long_fast <- df_long_fast |> mutate(FAST_NUCLEI_c = FAST_NUCLEI_T1 - mean(FAST_NUCLEI_T1, na.rm = TRUE))
+
 # Reshaping our data to fit SLOW  model
-df_long_slow <- hypertrophy %>%
-  select(PARTICIPANT, SLOW_NUCLEI_T1, SLOW_CSA_T1, SLOW_CSA_T2, SLOW_CSA_T3) %>%
+df_long_slow <- hypertrophy |>
+  select(PARTICIPANT, SLOW_NUCLEI_T1, SLOW_CSA_T1, SLOW_CSA_T2, SLOW_CSA_T3) |>
   pivot_longer(
     cols = c(SLOW_CSA_T1, SLOW_CSA_T2, SLOW_CSA_T3),
     names_to = "timepoint",
     values_to = "fCSA"
-  ) %>%
+  ) |>
   mutate(time = case_when(
     timepoint == "SLOW_CSA_T1" ~ 0,
     timepoint == "SLOW_CSA_T2" ~ 3,
     timepoint == "SLOW_CSA_T3" ~ 6
   ))
 
+#Centering our predictor variable in SLOW
+df_long_slow <- df_long_slow |> mutate(SLOW_NUCLEI_c = SLOW_NUCLEI_T1 - mean(SLOW_NUCLEI_T1, na.rm = TRUE))
+
 # The models
-FAST <- lmer(fCSA ~ time * FAST_NUCLEI_T1 + (1 | PARTICIPANT), data = df_long_fast)
-SLOW <- lmer(fCSA ~ time * SLOW_NUCLEI_T1 + (1 | PARTICIPANT), data = df_long_slow)
+FAST <- lmer(fCSA ~ time * FAST_NUCLEI_c + (1 | PARTICIPANT), data = df_long_fast)
+SLOW <- lmer(fCSA ~ time * SLOW_NUCLEI_c + (1 | PARTICIPANT), data = df_long_slow)
 
 ```
 
@@ -230,7 +236,7 @@ confint(SLOW)
 #| echo: false
 #| message: false
 #| warning: false
-#| tbl-cap: "Table of model parameters for FAST (type-II) and SLOW (type-I)"
+#| tbl-cap: "Model parameters for FAST (type-II) and SLOW (type-I)"
 
 
 # Create dataframe 
@@ -238,16 +244,16 @@ fixed_effects_table <- data.frame(
   Parameter = c("Intercept", "Time (weeks)", "Myonuclear density", 
                 "Time × myonuclear density"),
   Type_II = c(
-    "3503.2 ± 378.1 [2770.7 to 4235.6]",
-    "-102.3 ± 67.2 [-233.8 to 29.3]",
+    "3972.8 ± 140.7 [3700.2 to 4245.4]",
+    "38.5 ± 25 [-10.5 to 87.4]",
     "178.8 ± 133.6 [-80.0 to 437.6]",
     "53.6 ± 23.7 [7.1 to 100.0]"
   ),
   Type_I = c(
-    "3006.4 ± 405.7 [2221.0 to 3791.8]",
-    "33.6 ± 77.8 [-118.7 to 186.0]",
+    "3679.9 ± 147.2 [3394.9 to 3965]",
+    "6.2 ± 28.2 [-49.1 to 61.5]",
     "270.1 ± 151.6 [-23.4 to 563.7]",
-    "-11.0 ± 29.1 [-67.9 to 45.9]"
+    "-11 ± 29.1 [-67.9 to 45.9]"
   )
 )
 
@@ -266,80 +272,77 @@ fixed_effects_table %>%
   tab_footnote(
     footnote = "Values shown as estimate (μm²) ± SE [95% CI]."
   )
-
-VarCorr(FAST)
-VarCorr(SLOW)
-
 ```
 
 **Interaction effect between time and baseline myonuclear density** 
 
-The interaction effect time x baseline myonuclear density is our primary estimand for both models (see @tbl-fixed). All values in this section are reported as  estimate SE ±, [95% CI] unless stated otherwise. In model FAST, the interaction estimate between time x myonuclear density in type-II fibres was 53.6 (± 23.7, [7.1 to 100.0]). For each additional nucleus per type-II fibre at baseline, there was an increased weekly increase of 53.6 μm² in type-II fibres. However, the large SE and  wide CI means that there is a great degree of uncertainty tied to this estimate The CI does not cross zero, however, which indicates that there is a positive effect of having higher myonuclear density for hypetrophy outcomes. 
+The interaction effect time x baseline myonuclear density is our primary estimand for both models (see @tbl-fixed). All values in this section are reported as  estimate SE ±, [95% CI] unless stated otherwise. In FAST, the interaction estimate between time x myonuclear density in type-II fibres was 53.6 (± 23.7, [7.1 to 100.0]). For each additional nucleus per type-II fibre at baseline, there was a weekly increased area  of 53.6 μm² per type type-II fibre. However, the large SE and  wide CI means that there is a great degree of uncertainty tied to this estimate. The CI does not cross zero, which indicates that there is a positive effect of having higher myonuclear density for hypertrophy outcomes in type-II fibres.
 
-In model SLOW, the interaction estimate between time x myonuclear density in type-I fibres was -11 (± 29.1, [-67.9 to 45.9]). For each increase in nucleus per type-I fibre at baseline, we observed a weekly decrease of 11 μm² in type-I fibres. The CI crosses zeero and the SE is larger than the estimate itself, which indicated that there is no clear association between baseline myonuclear density and hypetrophy in type-I fibres. 
+In SLOW, the interaction estimate between time x myonuclear density in type-I fibres was -11 (± 29.1, [-67.9 to 45.9]). For each increase in nucleus per type-I fibre at baseline, we observed a weekly decrease of 11 μm² in type-I fibres. The CI crosses zero and the SE is larger than the estimate itself, which indicates that there is no clear association between baseline myonuclear density and hypetrophy in type-I fibres. 
 
-**Random effects**
+@fig-line shows us the predicted trajectories of fCSA in both type-I and type-II fibres, at different baseline values of myonuclear density. In type-II fibres, ..
 
-Random intercepts variance 
-
-Residual variance 
+In type-I fibres, .. 
 
 **Secondary findings** 
 
-Intercepts, main effects of time and baseline myonuclear density are reported in @tbl-fixed. However, since these estimates represent the values when the predictor value is at zero, these estimates do not provide much information in isolation. 
+Intercepts, main effects of time and baseline myonuclear density are reported in @tbl-fixed. On average, fCSA increased by 38.5 μm² per week in type-II fibres and 6.2 μm² per week  in type-I fibres at mean baseline myonuclear density. However, both confidence intervals include zero, precluding us from drawing strong inferences. The random intercept standard deviation was ± 559.2 μm² (type-II) and ± 540.1 μm² (type-I), indicating substantial between-participant variability in baseline fCSA.  
 
 ```{r}
 #| echo: false
 #| message: true
 #| warning: false
-mean(df_long_fast$FAST_NUCLEI_T1, na.rm = TRUE)
-sd(df_long_fast$FAST_NUCLEI_T1, na.rm = TRUE)
+#| label: fig-line
+#| fig-cap: "Line plots showing predictions at population level for changes in fCSA at different baseline myonuclear densities. "
+#| fig-width: 7
+#| fig-height: 4
 
-mean(df_long_slow$SLOW_NUCLEI_T1, na.rm = TRUE)
-sd(df_long_slow$SLOW_NUCLEI_T1, na.rm = TRUE)
 
 # FAST model predictions
-pred_fast <- expand.grid(
+fast_sd <- sd(df_long_fast$FAST_NUCLEI_c, na.rm = TRUE)
+
+newdata_fast <- expand.grid(
   time = c(0, 3, 6),
-  FAST_NUCLEI_T1 = c(2.63 - 1.06, 2.63, 2.63 + 1.06)  # low, mean, high
+  FAST_NUCLEI_c = c(-1, 0, 1) * fast_sd
 )
-pred_fast$fCSA <- predict(FAST, newdata = pred_fast, re.form = NA)
-pred_fast$density_level <- rep(c("Low (-1 SD)", "Mean", "High (+1 SD)"), each = 3)
+newdata_fast$predicted <- predict(FAST, newdata = newdata_fast, re.form = NA)
+newdata_fast$nuclei_level <- factor(rep(c("Low (−1 SD)", "Mean", "High (+1 SD)"), each = 3),
+                                    levels = c("Low (−1 SD)", "Mean", "High (+1 SD)"))
+newdata_fast$fiber_type <- "FAST: Type-II"
+
 
 # SLOW model predictions
-pred_slow <- expand.grid(
+slow_sd <- sd(df_long_slow$SLOW_NUCLEI_c, na.rm = TRUE)
+
+newdata_slow <- expand.grid(
   time = c(0, 3, 6),
-  SLOW_NUCLEI_T1 = c(2.49 - 0.98, 2.49, 2.49 + 0.98)
+  SLOW_NUCLEI_c = c(-1, 0, 1) * slow_sd
 )
-pred_slow$fCSA <- predict(SLOW, newdata = pred_slow, re.form = NA)
-pred_slow$density_level <- rep(c("Low (-1 SD)", "Mean", "High (+1 SD)"), each = 3)
+newdata_slow$predicted <- predict(SLOW, newdata = newdata_slow, re.form = NA)
+newdata_slow$nuclei_level <- factor(rep(c("Low (−1 SD)", "Mean", "High (+1 SD)"), each = 3),
+                                    levels = c("Low (−1 SD)", "Mean", "High (+1 SD)"))
+newdata_slow$fiber_type <- "SLOW: Type-I"
 
-# Fiber type labels
-pred_fast$fiber_type <- "Type II"
-pred_slow$fiber_type <- "Type I"
 
-# Combine into one dataframe
-pred_all <- bind_rows(pred_fast, pred_slow)
+# Combine and plot
+combined <- bind_rows(newdata_fast, newdata_slow)
 
-# Factor order for legend 
-pred_all$density_level <- factor(pred_all$density_level, 
-                                  levels = c("Low (-1 SD)", "Mean", "High (+1 SD)"))
-
-ggplot(pred_all, aes(x = time, y = fCSA, color = density_level, group = density_level)) +
+ggplot(combined, aes(x = time, y = predicted, color = nuclei_level)) +
   geom_line(linewidth = 1) +
   geom_point(size = 2) +
-  facet_wrap(~fiber_type) +
-  labs(
-    x = "Time (weeks)",
-    y = "Predicted fCSA (μm²)",
-    color = "Baseline myonuclear density"
-  ) +
-  scale_x_continuous(breaks = c(0, 3, 6)) +
-  theme_minimal() +
-  theme(legend.position = "bottom") +
-  theme_bw()
-```
+  facet_wrap(~ fiber_type) +
+  labs(x = "Time (weeks)", 
+       y = "Predicted fCSA (μm²)", 
+       color = "Baseline myonuclei") +
+  scale_y_continuous(breaks = seq(3200, 4800, by = 200)) +
+  theme_classic() +
+  theme(
+    legend.position = "bottom",
+    strip.background = element_blank(),
+    strip.text = element_text(face = "bold", size = 12)
+  )
 
+```
 
 # Discussion
 
@@ -351,7 +354,7 @@ Limited ecological validity. The population of the study is highly homogenous, a
 
 Inability to establish causality with an observational design. 
 
-Pre-regristation? Philopsophy of science - We did not report p-values, even though we employed a frequentist framework. This is because we do not regard p-values as particularly useful when emplying an LMM. 
+Philopsophy of science - Frequentist framework. We did not report p-values, even though we employed a frequentist framework. This is because we do not regard p-values as particularly useful when emplying an LMM. 
 
 # Conclusion 
 
