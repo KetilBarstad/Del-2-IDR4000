@@ -21,25 +21,27 @@ and type-II fibres and changes in vastus lateralis fCSA using a linear-mixed eff
 
 ## Folder structure
 
+```
 Del2/
-├── Data/
-│   └── [raw data files containing the hypertrophy dataset]
-├── Del2.qmd
-├── Del2.pdf
-├── Del 2.Rproj
-├── references.bib  #Bibliography
-├── vancouver.csl   #Citation style
+├── Data/           # Raw data files from Haun et al.
+├── Del2.qmd        # Main Quarto document with R code
+├── Del2.pdf        # Rendered PDF output
+├── Del 2.Rproj     # RStudio project file
+├── references.bib  # Bibliography
+├── vancouver.csl   # Citation style
 └── README.md
+```
 
-## How to perform statistical analysis 
+## How to reproduce analysis
 
-1. Clone this repository.
-2. Open the R-project in R-studio. 
-3. Install required packages.
-4. Render the Quarto document: 'quarto render Del2.qmd'
+- Install packages in RStudio: `install.packages(c("tidyverse", "lme4", "gt"))`
+- Clone the repository: `git clone https://github.com/YourUsername/Del2.git`
+- Open `Del 2.Rproj` in RStudio
+- Open `Del2.qmd` and click "Render" to generate the PDF
 
 
 ## Bibliography
 
-- Haun CT et al. (2018). Effects of Graded Whey Supplementation During Extreme-Volume Resistance Training. *Front Nutr.*
-- Haun CT et al. (2019). Pre-training Skeletal Muscle Fiber Size and Predominant Fiber Type Best Predict Hypertrophic Responses. *Front Physiol.*
+Haun CT, Vann CG, Mobley CB, Roberson PA, Osburn SC, Holmes HM, et al. Effectsof Graded Whey Supplementation During Extreme-Volume Resistance Training. Fron-tiers in Nutrition 2018;5.https://doi.org/10.3389/fnut.2018.00084.12
+
+Haun CT, Vann CG, Mobley CB, Osburn SC, Mumford PW, Roberson PA, et al. Pre-training Skeletal Muscle Fiber Size and Predominant Fiber Type Best Predict Hyper-trophic Responses to 6 Weeks of Resistance Training in Previously Trained Young Men.Frontiers in Physiology 2019;10.https://doi.org/10.3389/fphys.2019.00297.
