@@ -25,7 +25,6 @@ number-sections: true
 #Load in the packages and dataset we will be using 
 library(tidyverse)
 library(exscidata)
-library(car)
 library(gt)
 library(lme4)
 hypertrophy <- read_csv("data/hypertrophy.csv")
@@ -101,7 +100,7 @@ hypertrophy %>%
 
 ## Statistical analysis
 
-All statistical analyses were performed using R (version 4.5.1) in Rstudio (version 2025.09.2) using a frequentist framework. The R-packages used for statistical analysis was the *lme4* package. For complete information regarding the R-packages used throughout the study, see Del2.qmd file found within the GitHub repository. 
+All statistical analyses were performed using R (version 4.5.1) in Rstudio (version 2025.09.2) using a frequentist framework. The R-packages used for statistical analysis was the *lme4* package. For complete information regarding the R-packages used throughout the study, see Del2.qmd and the README files found within the GitHub repository. 
 
 **Statistical approach**
 
@@ -363,7 +362,7 @@ The present study aimed to explore if baseline myonuclear density could predict 
 
 ## Interpretation
 
-MDT --> This could indicate that individuals with more myonuclei at baseline have a greater potential for muscle hypertrophy following high-volume RT-protocols.
+MDT --> Our reulsts could indicate that individuals with more myonuclei per type-II fibre have a greater potential for muscle hypertrophy following high-volume RT-protocols.
 
 Why type-II and not type-I?
 

@@ -37,7 +37,8 @@ Del2/
 - Install packages in RStudio: `install.packages(c("tidyverse", "lme4", "gt"))`
 - Clone the repository: `git clone https://github.com/YourUsername/Del2.git`
 - Open `Del 2.Rproj` in RStudio
-- Open `Del2.qmd` and click "Render" to generate the PDF
+- Open Rstudio, and load the packages: `library(tidyverse), library(lme4), and so on`
+- Open `Del2.qmd` and run the chunks in the order they appear in the 
 
 
 ## Bibliography
