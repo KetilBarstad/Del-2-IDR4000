@@ -38,7 +38,7 @@ Del2/
 - Clone the repository: `git clone https://github.com/YourUsername/Del2.git`
 - Open `Del 2.Rproj` in RStudio
 - Open Rstudio, and load the packages: `library(tidyverse), library(lme4), and so on`
-- Open `Del2.qmd` and run the chunks in the order they appear in the 
+- Open `Del2.qmd` and run the chunks in sequential order to re-produce analysis
 
 
 ## Bibliography

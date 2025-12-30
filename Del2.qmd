@@ -1,5 +1,5 @@
 ---
-title: "Part 2: Does baseline myonuclear density in type-I and type-II myofibres predict the hypertrophic response following a 6-week RT-protocol in trained, young men?"
+title: "Part 2: Does baseline myonuclear density in type-I and type-II myofibres predict the hypertrophic response following a 6-week RT-protocol?"
 author: "Ketil Barstad"
 date: 2025-11-18
 bibliography: references.bib
@@ -34,33 +34,33 @@ hypertrophy <- read_csv("data/hypertrophy.csv")
 
 # Abstract
 
-**Background:**
+**Background:** The aim of this study was to re-analyze data from two previous studies [@haunPretrainingSkeletalMuscle2019; @haunEffectsGradedWhey2018]. We aimed to assess whether baseline myonuclear density could predict the change in fCSA for both type-I and type-II myofibres. 
 
-**Methods:**
+**Methods:** Using a linear-mixed effect model, we assessed whether baseline myonuclear density (myonuclei per fibre CSA) predicted the rate of fCSA change over a 6-week progressive volume RT-protocol in 30 previously trained men. Separate models were fit for type-I and type-II myofibres, with baseline myonuclear density as our predictor and fCSA measured at three timepoints (baseline, week 3 and week 6) as our outcome variable. 
 
-**Results:**
+**Results:** Our main finding was a positive association between higher baseline myonuclear density and hypertrophy of fCSA in type-II myofibres (estimate: 53.6 μm², SE: ± 23.7 μm²/week, [95% CI: 7.1 to 100]). We did not find an interaction effect for baseline myonuclear density in type-I myofibres (-11 μm², ± 29.1  μm²/week, [-67.9 to 45.9])    
 
-**Conclusion:**
+**Conclusion:** Baseline myonuclear density in type-II myofibres may contribute to the individual responses in hypertrophy to RT. This may reflect greater transcriptional capacity, which may lead to improved protein synthesis. The results should be interpreted cautiously, given our wide confidence intervals. Sampling bias, small sample size and a lack of an outcome variable at a whole-muscle level warrants further research. 
 
 # Introduction
 
-Resistance training (RT) is an effective method to induce skeletal muscle hypertrophy [@robertsMechanismsMechanicalOverloadinduced2023b]. However, the individual responses to the same RT-protocol can vary greatly. Research has shown a wide array of responses when it comes to improvements in skeletal muscle hypertrophy, maximal strength and metabolic markers of health [@erskineInterindividualVariabilityAdaptation2010; @ahtiainenInterindividualVariationResponse2020]. There have been several proposed mechanisms as to why this inter-individual response exists, and includes but is not limited to genetics, epigenetics and environmental factors (sleep, stress and dietary patterns) [@rossPrecisionExerciseMedicine2019]. 
+Resistance training (RT) is an effective method to induce skeletal muscle hypertrophy [@robertsMechanismsMechanicalOverloadinduced2023b]. However, individual responses to the same RT-protocol can vary greatly. Research has shown a wide array of responses in to improvements in skeletal muscle hypertrophy, maximal strength and metabolic markers of health [@erskineInterindividualVariabilityAdaptation2010; @ahtiainenInterindividualVariationResponse2020]. Several mechanisms have been proposed, and includes but is not limited to genetics, epigenetics and environmental factors [@rossPrecisionExerciseMedicine2019]. 
 
-Within genetics, the myonuclei are thought to play a major role in the process of skeletal muscle hypertrophy [@snijdersChangesMyonuclearDomain2016]. Skeletal myofibres are multinucleated cells, each of them containing hundreds to thousands of myonuclei. Each one of these myonuclei govern a finite amount of cytoplasm and serve an important function for enhancing both gene transcription and protein synthesis [@snijdersChangesMyonuclearDomain2016]. In the early stages of hypertrophy, myonuclei can expand their domains to accommodate the initial rate of growth, also known as myonuclear expansion [@petrellaPotentMyofiberHypertrophy2008]. Beyond a certain threshold, it has been hypothesized that quiescent satellite cells (SC) must proliferate and differentiate into new myonuclei to facilitate further skeletal muscle hypertrophy. This concept is also known as myonuclear accretion. However, this concept remains controversial, and the research is equivocal as to whether this threshold exists [@murachMyonuclearDomainFlexibility2018a].
+Within genetics, myonuclei are thought to play a major role in skeletal muscle hypertrophy [@snijdersChangesMyonuclearDomain2016]. Skeletal myofibres are multinucleated cells, each containing hundreds to thousands of myonuclei. Each myonucleus governs a finite amount of cytoplasm and serves an important function for gene transcription and protein synthesis [@snijdersChangesMyonuclearDomain2016]. In the early stages of hypertrophy, myonuclei can expand their domains to accommodate the initial growth, known as myonuclear expansion [@petrellaPotentMyofiberHypertrophy2008]. Beyond a certain threshold, quiescent satellite cells (SC) must proliferate and differentiate into new myonuclei to facilitate further skeletal muscle hypertrophy. This is known as myonuclear accretion. However, the research is equivocal as to whether this threshold exists [@murachMyonuclearDomainFlexibility2018a].
 
-There has been extensive research on the roles of myonuclei accretion and expansion for skeletal muscle hypertrophy. Petrella and colleagues in 2008 found that the differences in hypertrophy between high and low responders to RT can be explained by the degree of myonuclear accretion [@petrellaPotentMyofiberHypertrophy2008]. However, Haun and colleagues found no group differences in pre- to post-measurements in myonuclear density following a 6-week RT-protocol, despite significant differences in measured hypertrophy [@haunPretrainingSkeletalMuscle2019]. There is also other literature challenging the notion that myonuclear accretion is associated with skeletal muscle hypertrophy [@mobleyBiomarkersAssociatedLow2018].
+There has been extensive research on myonuclei accretion and expansion for skeletal muscle hypertrophy. A study in 2008 found that differences in hypertrophy between high and low responders to RT can be explained by the degree of myonuclear accretion [@petrellaPotentMyofiberHypertrophy2008]. However, Haun and colleagues found no group differences in pre- to post-measurements in myonuclear density after a 6-week RT-protocol, despite significant differences in measured hypertrophy [@haunPretrainingSkeletalMuscle2019]. Litterature also challenges the notion that myonuclear accretion is associated with hypertrophy [@mobleyBiomarkersAssociatedLow2018].
 
-On the topic of myonuclear expansion, Petrella and their group has suggested that there exists a maximum ceiling for how much the domains of individual myonuclei can expand to [@petrellaPotentMyofiberHypertrophy2008]. This consequently led to the suggestion that a fibre size increase of more than ~26-27% must be accompanied by myonuclear accretion [@petrellaEfficacyMyonuclearAddition2006]. The research here is also diverging, as another group of researchers found significant myonuclear accretion without myonuclear expansion, despite the type-II fibres of the participants growing with more than 40% from pre- to post-measurements [@snijdersChangesMyonuclearDomain2016]. 
+On myonuclear expansion, Petrella and their group suggested a maximum ceiling for myonuclear domain expansion [@petrellaPotentMyofiberHypertrophy2008]. This led to the suggestion that a fibre size increase of more than ~26-27% must be accompanied by myonuclear accretion [@petrellaEfficacyMyonuclearAddition2006]. The research is divering, as another group of researchers found significant myonuclear accretion without expansion, despite type-II  growing more than 40% [@snijdersChangesMyonuclearDomain2016]. 
 
-The question of whether baseline myonuclear density in type-I and type-II myofibres predict the magnitude of the hypertrophic response following RT remains unclear. Previous research found association between baseline myonuclear *number* in type-I and type-II and the hypertrophic response following a 12-week RT protocol in young, untrained men [@mobleyBiomarkersAssociatedLow2018]. Another study found a moderate correlation between satellite cell count and myofibre growth [@petrellaPotentMyofiberHypertrophy2008]. Haun’s research group performed a study in 2019 on previously trained males, and their findings suggested that pre-training type-II fibre size was the strongest predictor of hypertrophy, while changes in type-I myonuclear number showed a positive but non-significant effect on hypertrophy. Haun used baseline myonuclear number in the regression model, but it did not emerge as a significant predictor of hypertrophy based on their composite hypertrophy score.
+Whether baseline myonuclear density in type-I and type-II myofibres predicts the hypertrophic response following RT remains unclear. Previous research found no differences  in myonuclear accretion between low, moderate and high hypertrophic responders following a 12-week RT protocol in young, untrained men [@mobleyBiomarkersAssociatedLow2018]. Another study found a moderate correlation between satellite cell count and myofibre growth [@petrellaPotentMyofiberHypertrophy2008]. Haun’s group found in previously trained males that pre-training type-II fibre size was the strongest predictor of hypertrophy, while changes in type-I myonuclear number showed a positive but non-significant effect on hypertrophy. Baseline myonuclear number was used in the regression model, but it did not emerge as a predictor of hypertrophy based on their composite hypertrophy score.
 
-The present study re-examines the question used linear-mixed models to assess whether baseline myonuclear density, i.e the amount of myonuclei per cross-sectional area, is associated with the the rate of functional cross-sectional area (fCSA) change over time. A logical assumption is that greater baseline myonuclear density reflects increased transcriptional capacity, thus allowing for a superior hypertrophic response.
+The present study re-examines this using linear-mixed models to assess whether baseline myonuclear density, i.e the amount of myonuclei per cross-sectional area, is associated with the rate of functional cross-sectional area (fCSA) change over time. A logical assumption is that greater baseline myonuclear density reflects increased transcriptional capacity, allowing for a superior hypertrophic response.
 
-We aimed re-analyse the data  from the experimental studies performed by Haun and colleagues [@haunPretrainingSkeletalMuscle2019; @haunEffectsGradedWhey2018] to determine whether baseline myonuclear density in type-I and type-II fibres is predictive of the hypertrophic response following a 6-week resistance-training protocol, using an observational study design. We hypothesized a positive association between myonuclear density in both type-I and type-II fibres and changes in vastus lateralis fCSA, as greater myonuclear density may reflect increased transcriptional capacity and protein synthesis. 
+We re-analysed the data  from the experimental studies performed by Haun and colleagues [@haunPretrainingSkeletalMuscle2019; @haunEffectsGradedWhey2018] to determine whether baseline myonuclear density in type-I and type-II fibres is predictive of hypertrophy following a 6-week resistance-training protocol, using an observational study design. We hypothesized a positive association between myonuclear density in fibre types and changes in vastus lateralis fCSA, as greater myonuclear density may reflect increased transcriptional capacity and protein synthesis. 
 
 # Materials and methods 
 
-The data in the study were obtained from Haun and colleagues study in 2018 [@haunEffectsGradedWhey2018]. They recruited 34 young, trained males (aged 21.48 ± 2.13) with previous RT-experience (5 ± 3 years). See table 1 for more information on the participants, retrieved from the studies [@haunPretrainingSkeletalMuscle2019; @haunEffectsGradedWhey2018]. Briefly, the participants performed a six week RT-protocol with progressive volume increases. The program was performed 3d/week, with each session consisting of two upper-body and two lower-body exercises. The starting volume for each exercise was 10 sets/exercise in week one, and was progressively increased each week until 32 sets/exercise in week six. Both functional cross-sectional area (fCSA) and myonuclear density of both type-I and type-II fibres was assessed via immunohistochemistry from vastus lateralis biopsies at three different time points: baseline (T1), midway through the intervention (T2) and post-intervention (T3). Myonuclear density was determined for both type-I and type-II fibres. The reader is referred to the original study for full details on the methodology used [@haunPretrainingSkeletalMuscle2019].
+The data in the study were obtained from Haun and colleagues study in 2018 [@haunEffectsGradedWhey2018]. They recruited 34 young, trained males (aged 21.48 ± 2.13) with previous RT-experience (5 ± 3 years). See table 1 for more information on the participants, retrieved from the studies [@haunPretrainingSkeletalMuscle2019; @haunEffectsGradedWhey2018]. Briefly, the participants performed a six week RT-protocol with progressive volume increases. The program was performed 3d/week, with each session consisting of two upper-body and two lower-body exercises. The starting volume for each exercise was 10 sets/exercise in week one, and was progressively increased each week until 32 sets/exercise in week six. Both functional cross-sectional area (fCSA) and myonuclear density of both type-I and type-II fibres was assessed via immunohistochemistry from vastus lateralis biopsies at three different time points: baseline (T1), midway through the intervention (T2) and post-intervention (T3). Myonuclear density was determined for both type-I and type-II fibres. The reader is referred to the original study for full details on the methodology [@haunPretrainingSkeletalMuscle2019].
 
 After accounting for participant drop-out and missing values, 30 participants were included in their final dataset, which were used in our study's analysis. 
 
@@ -86,9 +86,9 @@ hypertrophy %>%
   pivot_longer(everything(), names_to = "Variable", values_to = "Value") %>%
   mutate(Variable = c("n", "Age (years)", "Height (cm)", "Body mass (kg)", 
                       "Training age (years)", "Baseline Type II fCSA (μm²)", 
-                      "Baseline Type II myonuclei density (nuclei/fiber",
+                      "Baseline Type II myonuclei density (nuclei/fiber CSA)",
                       "Baseline Type I fCSA (μm²)",
-                      "Baseline Type I myonuclei density (nuclei/fiber")) %>%
+                      "Baseline Type I myonuclei density (nuclei/fiber CSA)")) %>%
   gt() %>%
   cols_label(Variable = "Variable", Value = "Mean ± SD") %>%
   tab_options(
@@ -100,31 +100,27 @@ hypertrophy %>%
 
 ## Statistical analysis
 
-All statistical analyses were performed using R (version 4.5.1) in Rstudio (version 2025.09.2) using a frequentist framework. The R-packages used for statistical analysis was the *lme4* package. For complete information regarding the R-packages used throughout the study, see Del2.qmd and the README files found within the GitHub repository. 
+All statistical analyses were performed using R (version 4.5.1) in Rstudio (version 2025.09.2) using a frequentist framework. The *lme4* package was used for statistical modeling. For complete information regarding packages, see Del2.qmd and the README files in the GitHub repository. 
 
 **Statistical approach**
 
-The primary estimand of interest was the **time x myonuclear density** interaction effect, which was determined by fitting the data to a linear-mixed effect model (LMM). We fit two different LMMs: one for type-II myofibres (FAST), and one for type-I myofibres (SLOW). The rationale for choosing an LMM was threefold. Firstly, an LMM allows us to handle dependent data points with more flexibility than models such as ANOVA or ANCOVA. In the dataset, fCSA was measured at three different time points (T1, T2 and T3). This also allows us to model the trajectory of change over time. The second key advantage of the LMM, is the ability to assign a random intercept for each participant. This is particularly useful, since it is evident from the dataset that baseline fCSA in the vastus lateralis is not equal across the participants. And thirdly, it allows the model to leverage shrinkage. This has the benefits of pulling each individual participants estimate closer towards the group mean, allowing for more accurate predictions by accounting for outliers in the dataset. Time was treated as a numeric factor given that we expect a linear relation between observed hypertrophy and the short intervention period of six-weeks. 
+The primary estimand of interest was the **time x myonuclear density** interaction effect, determined by fitting the data to a linear-mixed effect model (LMM). We fit separate LMMs for type-II fibres (FAST) and type-I fibres (SLOW). The rationale for choosing an LMM was threefold. Firstly, an LMM allows us to handle dependent data points with more flexibility than models such as ANOVA or ANCOVA. In the dataset, fCSA was measured at three different time points (T1, T2 and T3). This also allows us to model the trajectory of change over time. The second key advantage of the LMM, is the ability to assign a random intercept for each participant. This is important, since baseline fCSA in the vastus lateralis is not equal across the participants. And thirdly, it allows the model to leverage shrinkage. This pulls each individual participants estimate closer towards the group mean, allowing for more accurate predictions by accounting for outliers. Time was treated as a numeric factor given the expected linear relationship over the six-week intervention.
 
-Several statistical approaches were considered but ultimately discarded. A simple change score in pre- to post-measurements of fCSA was an alternative, but this option does not consider differing baseline values of fCSA impacting our outcome variable. It also does not allow us to incorporate multiple measurement points into the model. A repeated measures ANOVA was also considered, as it could allow us to model change score from pre- to post with multiple measurement points. However, since our predictor variable is continuous and not categorical, it would require us to cluster the participants into arbitrary groups based on their baseline myonuclear density values. An ANCOVA model was also an option, seeing as we could control for different baseline values of fCSA with a covariate. However, this model would also require us to discard the T2-timepoint measurement or employing multiple models. The LMM was consequently chosen, seeing at it satisfies all our requirements: our three different measurements points of fCSA (T1 – T3), a continuous predictor variable in baseline myonuclear density and the model can account for differences in baseline values of fCSA with random intercepts for each participant. 
-
-**Variables for analysis**
+Several alternative statistical approaches were considered. A change score in pre- to post-measurements was considered, but this option does not consider differing baseline values of fCSA impacting our outcome variable. It also does not allow us to incorporate multiple measurement points. Repeated measures ANOVA could handle multiple measurements but would require categorizing participants into arbitrary groups based on myonuclear density. An ANCOVA model was also an option, seeing as we could control for different baseline values of fCSA with a covariate. However, this model would also require us to discard the T2-timepoint measurement or employing multiple models. The LMM satisfies all three requirements: the three different measurements points of fCSA (T1 – T3), a continuous predictor variable in baseline myonuclear density and the model can account for differences in baseline values of fCSA with random intercepts for each participant. 
 
 We chose to fit our statistical analysis into two separate models for each fibre type, seeing as the baseline densities were different and that type-II fibres have a much larger growth potential than type-I fibres [@haunPretrainingSkeletalMuscle2019]. Both models used fCSA measured at three different time points (T1, T2 and T3) as the outcome variable, while our predictor variable was only baseline myonuclear density (T1). The predictor variable was centered around the mean value of baseline myonuclear density for both models, to aid with interpretability of the coefficients of the model. 
 
 Our first model, FAST, examined type-II myofibres. The primary estimand of interest was the interaction between time and baseline myonuclear density in type-II myofibres to predict the rate of change in fCSA. Our second model, SLOW, examined type-I myofibres. The primary estimand of interest was the interaction between time and baseline myonuclear density in type-I myofibres  to predict the rate of change in fCSA. 
 
-The rationale for fCSA as our hypertrophy outcome is because our hypothesis is at the cellular level. Therefore, a logical extension would be to assess changes in hypertrophy at the cellular level. However, we do acknowledge that there exist several limitations to this approach compared to whole-muscle outcomes such as lean mass measured by DEXA or muscle thickness measured by B-mode ultrasound. The reader is referred to section 5 for further discussion regarding interpretation of the outcome variable. 
+We chose fCSA as our hypertrophy outcome because our hypothesis is at the cellular level. We acknowledge that there exist limitations to this approach compared to whole-muscle outcomes such as lean mass measured by DEXA or muscle thickness measured by B-mode ultrasound. See section 5 for further discussion regarding the outcome variable. 
 
 **Statistical power**
 
-Haun reported that with a sample of n = 29 participants, 2 predictors, $\alpha$ = 0.05 and  1 - $\beta$ = 0.8, their minimum detecable effect size was f^2 = 0.35. The researchers acknowledged that the study design was underpowered to detect small but significant effects [@haunPretrainingSkeletalMuscle2019]. However, since Haun employed a stepwise linear regression, this power calculation does not directly apply to our LMM.  
-
-Since we employed an LMM, we focused on effect estimates, standard errors (SE) and confidence intervals (CIs) rather than relying on statistical significance to aid with interpretation. This allows us to interpret the results with varying degrees of confidence, rather than a dichotomous verdict of signififance vs. non-significance. 
+Haun reported that with n = 29 participants, 2 predictors, $\alpha$ = 0.05 and  1 - $\beta$ = 0.8, their minimum detecable effect size was f^2 = 0.35. The design was acknowledged as underpowered to detect small effects [@haunPretrainingSkeletalMuscle2019]. Since this power calculation does not directly apply to our LMM, we focused on effect estimates, standard errors (SE) and confidence intervals (CIs) rather than relying on statistical significance to aid with interpretation. This allows us to interpret the results with varying degrees of confidence, rather than a dichotomous verdict of significance vs. non-significance. 
 
 **Testing our model assumptions**
 
-Our LMMs assume that our residuals are normally distributed around zero, and that they do not differ across the fitted values. @fig-residuals visualises the residual vs. fitted values for both of our models, respectively. The residuals vs. fitted plot of the type-II model appeared randomly scattered around zero, which suggested homoscedasticity. However, the same plot for the type-I model suggested some heteroscedasticity due to potential outliers. This prompted a sensitivity analysis, which was reported in the Results section. @fig-qq indicated that our residuals were approximately normally distributed and that the relationship between predictor and outcome variables are approximately linear. We saw some slight deviations at the tail-end of the distributions, but this is to be expected with extreme values and a small sample size (n = 30). 
+Our LMMs assume that our residuals are normally distributed around zero and do not differ across the fitted values. @fig-residuals shows the residual vs. fitted values for both models. The type-II plot appeared randomly scattered around zero, suggestion homoscedasticity. The type-I plot suggested heteroscedasticity, prompting a sensitivity analysis reported in section 4. @fig-qq indicated that our residuals were approximately normally distributed and that the relationship between predictor and outcome variables are approximately linear. 
 
 ```{r}
 #| include: false
@@ -188,8 +184,8 @@ confint(SLOW_2)
 #| echo: false
 #| label: fig-residuals
 #| fig-cap: "Residuals versus fitted values for FAST (Type-II fibres, left) and SLOW (Type-I fibres, right)."
-#| fig-width: 7
-#| fig-height: 4
+#| fig-width: 6
+#| fig-height: 3
 
 par(mfrow = c(1, 2))
 
@@ -231,76 +227,59 @@ par(mfrow = c(1, 1))
 **Descriptive statistics**
 
 ```{r}
-#| include: false
-
-# FAST model parameters
-summary(FAST)$coefficients
-
-confint(FAST)
-
-# SLOW model parameters
-summary(SLOW)$coefficients
-
-confint(SLOW)
-```
-
-
-```{r}
-#| label: tbl-fixed
 #| echo: false
-#| message: false
-#| warning: false
-#| tbl-cap: "Model parameters for FAST (type-II) and SLOW (type-I)"
+#| label: tbl-effects
+#| tbl-cap: 'Fixed effects and random effects of type-I and type-II models'
 
-
-# Create dataframe 
-fixed_effects_table <- data.frame(
-  Parameter = c("Intercept", "Time (weeks)", "Myonuclear density", 
-                "Time × myonuclear density"),
+effects_table <- data.frame(
+  Parameter = c("**Fixed effects**",
+                "Intercept", "Time (weeks)", "Myonuclear density", 
+                "Time × myonuclear density",
+                "**Random effects**",
+                "Intercept)"),
   Type_II = c(
+    "",
     "3972.8 ± 140.7 [3700.2 to 4245.4]",
     "38.5 ± 25 [-10.5 to 87.4]",
     "178.8 ± 133.6 [-80.0 to 437.6]",
-    "53.6 ± 23.7 [7.1 to 100.0]"
+    "53.6 ± 23.7 [7.1 to 100.0]",
+    "",
+    "SD = 559.2"
   ),
   Type_I = c(
+    "",
     "3679.9 ± 147.2 [3394.9 to 3965]",
     "6.2 ± 28.2 [-49.1 to 61.5]",
     "270.1 ± 151.6 [-23.4 to 563.7]",
-    "-11 ± 29.1 [-67.9 to 45.9]"
+    "-11 ± 29.1 [-67.9 to 45.9]",
+    "",
+    "SD = 540.1"
   )
 )
 
-fixed_effects_table %>%
+effects_table %>%
   gt() %>%
   cols_label(
     Parameter = "",
-    Type_II = "FAST",
-    Type_I = "SLOW"
+    Type_II = "Type II (fast)",
+    Type_I = "Type I (slow)"
   ) %>%
+  fmt_markdown(columns = Parameter) %>%
   tab_options(
     table.font.size = px(11),
     heading.title.font.size = px(13),
     table.width = pct(100)
   ) %>%
   tab_footnote(
-    footnote = "Values shown as estimate (μm²) ± SE [95% CI]."
+    footnote = "Fixed effects shown as estimate ± SE [95% CI]. All values in μm²."
   )
 ```
 
-**Interaction effect between time and baseline myonuclear density** 
+The interaction effect time x baseline myonuclear density is our primary estimand for both models (see @tbl-effects). All values in this section are reported as estimate SE ±, [95% CI] unless stated otherwise. In type-II myofibres, the interaction estimates between time x myonuclear density was 53.6 (± 23.7, [7.1 to 100.0]). For each additional nucleus per type-II myofibre at baseline, there was a weekly increased area of 53.6 μm² per type-II myofibre. However, the large SE and wide CI means that there is a great degree of uncertainty tied to this estimate. The CI does not cross zero, which suggests a positive effect of having higher myonuclear density for hypertrophy outcomes in type-II myofibres. In type-I myofibres, the interaction estimate between time x myonuclear density was -11 (± 29.1, [-67.9 to 45.9]). For each increase in nucleus per type-I myofibre at baseline, we observed a weekly decrease of 11 μm². The CI crosses zero and the SE is larger than the estimate itself, which indicates that there is no clear association between baseline myonuclear density and hypertrophy in type-I myofibres. 
 
-The interaction effect time x baseline myonuclear density is our primary estimand for both models (see @tbl-fixed). All values in this section are reported as estimate SE ±, [95% CI] unless stated otherwise. In FAST, the interaction estimates between time x myonuclear density in type-II fibres was 53.6 (± 23.7, [7.1 to 100.0]). For each additional nucleus per type-II fibre at baseline, there was a weekly increased area of 53.6 μm² per type-II fibre. However, the large SE and wide CI means that there is a great degree of uncertainty tied to this estimate. The CI does not cross zero, which suggests a positive effect of having higher myonuclear density for hypertrophy outcomes in type-II fibres.
+Sensitivity analysis excluding one extreme observation (n = 1) from our residuals yielded a positive estimate for the type-I myofibre interaction of 20.82 (±25.2, [-28.4 to 70.1] compared to our original estimate (see @tbl-effects). This suggested that the single observation significantly influenced the results. 
 
-In SLOW, the interaction estimate between time x myonuclear density in type-I fibres was -11 (± 29.1, [-67.9 to 45.9]). For each increase in nucleus per type-I fibre at baseline, we observed a weekly decrease of 11 μm² in type-I fibres. The CI crosses zero and the SE is larger than the estimate itself, which indicates that there is no clear association between baseline myonuclear density and hypertrophy in type-I fibres. 
-
-Sensitivity analysis excluding one extreme observation from our residuals yielded a positive estimate for the type-I fibre interaction of 20.82 (±25.2, [-28.4 to 70.1] compared to our original estimate. This suggested that the single observation significantly influenced the type-I fibre results. 
-
-@fig-line shows us the predicted trajectories of fCSA in both type-I and type-II fibres, at different baseline values of myonuclear density (mean ± SD). We chose to split the trajectories into three categories for easier interpretation by the reader. In type-II fibres, we observed a steep slope for changes in fCSA with higher baseline values. In type-I fibres, however, the slopes are relatively parallel for changes in fCSA for all three categories. 
-
-**Secondary findings** 
-
-Intercepts, main effects of time and baseline myonuclear density are reported in @tbl-fixed. On average, fCSA increased by 38.5 μm² per week in type-II fibres and 6.2 μm² per week in type-I fibres at mean baseline myonuclear density. However, both confidence intervals include zero, precluding us from drawing strong inferences. The random intercept standard deviation was ± 559.2 μm² (type-II) and ± 540.1 μm² (type-I), indicating substantial between-participant variability in baseline fCSA.  
+@fig-line shows us the predicted trajectories of fCSA in both type-I and type-II myofibres, at different baseline values of myonuclear density (mean ± SD). We chose to split the trajectories into three categories for easier interpretation by the reader. In type-II myofibres, we observed a steep slope for changes in fCSA with higher baseline values. In type-I myofibres, however, the slopes are relatively parallel for changes in fCSA for all three categories. 
 
 ```{r}
 #| echo: false
@@ -358,26 +337,28 @@ ggplot(combined, aes(x = time, y = predicted, color = nuclei_level)) +
 ```
 # Discussion
 
-The present study aimed to explore if baseline myonuclear density could predict changes in fCSA in both type-I and type-II myofibres. Our main finding was a positive association between higher baseline myonuclear density and hypertrophy of fCSA in type-II myofibres, when baseline values were at or above the mean ($\ge$ 2.63 nuclei per fibre). However, the results must be interpreted with caution given our wide confidence intervals. For the type-I model, we found no interaction effect between baseline myonuclear density and changes in fCSA. 
+The present study aimed to explore if baseline myonuclear density could predict changes in fCSA in both type-I and type-II myofibres. Our main finding was a positive association between higher baseline myonuclear density and hypertrophy of fCSA in type-II myofibres, when baseline values were at or above the mean ($\ge$ 2.63 nuclei per fibre CSA). The results must be interpreted with caution given our wide confidence intervals. For the type-I model, we found no interaction effect between baseline myonuclear density and changes in fCSA. However, our sensitivity analysis excluding one extreme outlier revealed a positive but uncertain effect for our type-I model, indicating that the small sample size may limit our ability to detect a true effect.
 
 ## Interpretation
 
-MDT --> Our reulsts could indicate that individuals with more myonuclei per type-II fibre have a greater potential for muscle hypertrophy following high-volume RT-protocols.
+Our findings deviate from Haun and colleagues, who did not find that baseline myonuclear density predicted the hypertrophic response [@haunPretrainingSkeletalMuscle2019]. However, we had distinct methodological approaches. Haun used a composite hypertrophy outcome score using four different measurement methods, while we only used fCSA. Similarly, we also deployed different statistical approaches (two-way ANOVA and stepwise regression vs. LMM). Our approach may have been more sensitive to predict changes between predictor-outcome at the cellular level.
 
-Why type-II and not type-I?
+Our results suggest that greater baseline myonuclear density reflects greater transcriptional capacity in type-II myofibres, which may contribute to superior hypertrophy outcomes. This is in agreement with a review from 2018 that highlighted the fact that type-II myofibres have a greater myonuclear domain flexibility and transcriptional reserve compared to type-I [@murachMyonuclearDomainFlexibility2018a]. The authors specifically highlighted that there has not been identified an upper ceiling to a specific myonuclear domain size, implying that myonuclei can support substantial hypertrophy without myonuclear accretion. Conversely, it is possible that type-I myofibres are more dependent on myonuclear accretion for muscle growth, making baseline values a weaker predictor for hypertrophy. Nonetheless, this remains highly speculative, and future research should specifically assess the relationship between myonuclear density and type-I myofibre hypertrophy. 
 
-Haun and colleagues found that myonuclear density in both type-I and type-II fibres did not predict the hypertrophic response. However, an important distinction between our analysis is the outcome variable and the statistical models employed. Haun used a composite outcome score for hypertrophy, 
+Petrella's group found that total myonuclear per fibre did not predict the hypertrophic response following a 16-week intervention [@petrellaPotentMyofiberHypertrophy2008], which is in contrast to our findings. An important distinction is that they measured total myonuclei per fibre, while our predictor variable was nuclei per fibre CSA. Our divergent findings could be explained by the fact that myofibres with greater myonuclear density have greater  transcriptional capacity relative to their size and cellular demands, promoting greater hypertrophy.
+Another potential confounder is also the fact that Petrella's group did not distinguish between type-I and type-II myofibres. 
 
 ## Limitations 
 
-Outcome variable of fCSA - Allows us to draw mechanistic inferences, but not at a whole-muscle level. Also limited by the amount of fibres that have actually been examined. 
+We chose a cellular outcome variable of fCSA to examine the predictor-outcome relationship at the cellular level. However, our divergent results with Haun’s study suggest that our findings do not generalize to whole-muscle measurements such as muscle thickness or thigh circumference. Additionally, fCSA was based on a small number of fibres were sampled per biopsy, and individuals vary considerable when it comes to total fibre number within the vastus lateralis [@lexellDistributionDifferentFiber1983]. This inter-individual variation means that changes at fibre-level do not correspond to changes at whole muscle-level, introducing a potential confounding variable.
 
-Limited ecological validity. The population of the study is highly homogenous, and represents sampling bias. 
+The present study also has limited ecological validity, based on the highly homogenous sample size and RT-protocol. All the recruited participants were previously trained young males, introducing sampling bias. Past research has shown us that young males exhibit different biomarkers responses and greater hypertrophy in response RT-training compared to older adults and females [@petrellaEfficacyMyonuclearAddition2006], limiting extrapolation to other populations. 
 
-Philosophy of science - Inability to establish causality with an observational design. Epistemologoical limits --> We cannot infer causal inference based on an observational desing. 
+Lastly, our study is limited in establishing causality based on our observational study design. An observational study can be used to generate hypotheses and identify patterns, but unmeasured biomarkers that independently influenced the hypertrophic response could have been potential confounding variables. 
 
-# Conclusion 
+## Conclusion
 
+Baseline myonuclear density in type-II fibres was positively associated with hypertrophy in fCSA following high-volume RT. The null findings for type-I fibres could be explained by a greater dependence on myonuclear accretion to support hypertrophy, but also by the limited sample size and heterogeneity of participants responses. Future research should aim to assess whether this relationship holds with different populations, different RT-protocols and larger sample sizes. 
 
 \newpage
 
