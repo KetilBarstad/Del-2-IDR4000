@@ -106,7 +106,7 @@ hypertrophy |>
 
 ## Statistical analysis
 
-All statistical analyses were performed using R (version 4.5.1) in Rstudio (version 2025.09.2) using a frequentist framework. The *lme4* package was used for statistical modeling. For complete information regarding packages, see Del2.qmd and the README files in the GitHub repository. 
+All statistical analyses were performed using R (version 4.5.1) in Rstudio (version 2025.09.2) using a frequentist framework. The *lme4* package was used for statistical modeling. For complete information regarding packages, see Del2.qmd and the README files in the GitHub repository (https://github.com/KetilBarstad/Del-2-IDR4000)
 
 **Statistical approach**
 
