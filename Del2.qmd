@@ -30,7 +30,7 @@ library(tidyverse)
 library(exscidata)
 library(gt)
 library(lme4)
-hypertrophy <- read_csv("data/hypertrophy.csv")
+hypertrophy <- read_csv("Data/hypertrophy.csv")
 ```
 
 \newpage
