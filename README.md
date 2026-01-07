@@ -1,6 +1,6 @@
 # Del-2-IDR4000
 
-This is a re-analysis of the data from Haun and colleagues studies from 2018 and 2019
+This is a re-analysis of the data from Haun and colleagues studies from 2018 and 2019 [1,2]
 
 ## Description 
 
@@ -41,11 +41,6 @@ Del2/
 
 ## Bibliography
 
-Haun CT, Vann CG, Mobley CB, et al. Effects of Graded Whey Supplementation During 
-Extreme-Volume Resistance Training. Frontiers in Nutrition 2018;5. 
-https://doi.org/10.3389/fnut.2018.00084
+[1] Haun CT, Vann CG, Mobley CB, Osburn SC, Mumford PW, Roberson PA, et al. Pre-training Skeletal Muscle Fiber Size and Predominant Fiber Type Best Predict Hyper-trophic Responses to 6 Weeks of Resistance Training in Previously Trained Young Men.Frontiers in Physiology 2019;10.https://doi.org/10.3389/fphys.2019.00297.
 
-Haun CT, Vann CG, Mobley CB, et al. Pre-training Skeletal Muscle Fiber Size and 
-Predominant Fiber Type Best Predict Hypertrophic Responses to 6 Weeks of Resistance 
-Training in Previously Trained Young Men. Frontiers in Physiology 2019;10. 
-https://doi.org/10.3389/fphys.2019.00297
+[2] Haun CT, Vann CG, Mobley CB, Roberson PA, Osburn SC, Holmes HM, et al. Effectsof Graded Whey Supplementation During Extreme-Volume Resistance Training. Fron-tiers in Nutrition 2018;5.https://doi.org/10.3389/fnut.2018.00084.
