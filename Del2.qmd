@@ -106,7 +106,7 @@ hypertrophy |>
 
 ## Statistical analysis
 
-All statistical analyses were performed using R (version 4.5.1) in Rstudio (version 2025.09.2) using a frequentist framework. The *lme4* package was used for statistical modeling. For complete information regarding packages, see Del2.qmd and the README files in the GitHub repository (https://github.com/KetilBarstad/Del-2-IDR4000)
+All statistical analyses were performed using R (version 4.5.1) in Rstudio (version 2025.09.2) using a frequentist framework. The *lme4* package was used for statistical modeling. For complete information regarding packages, see Del2.qmd and the README files in the [GitHub repository](https://github.com/KetilBarstad/Del-2-IDR4000)
 
 **Statistical approach**
 
@@ -370,7 +370,7 @@ Lastly, our study is limited in establishing causality based on our observationa
 
 ## Conclusion
 
-Baseline myonuclear density in type-II fibres was positively associated with hypertrophy in fCSA following high-volume RT. The null findings for type-I fibres could be explained by a greater dependence on myonuclear accretion to support hypertrophy, but also by the limited sample size and heterogeneity of participants responses. Future research should aim to assess whether this relationship holds with different populations, different RT-protocols and larger sample sizes. 
+Baseline myonuclear density in type-II fibres was positively associated with hypertrophy in fCSA following high-volume RT. The null findings for type-I fibres could be explained by a greater dependence on myonuclear accretion to support hypertrophy, but also by the limited sample size and heterogeneity of participants responses. Future research should aim to assess whether this relationship is consistent with different populations, different RT-protocols and larger sample sizes. 
 
 \newpage
 
