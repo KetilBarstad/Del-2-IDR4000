@@ -9,7 +9,7 @@ and type-II fibres and changes in vastus lateralis fCSA using a linear-mixed eff
 ## Necessary programs
 
 - R (version 4.5.1)
-- Rstudio (version 2025.09.2)
+- Rstudio (version 2026.01.0-392)
 - Quarto 
 
 ## R-packages
@@ -18,6 +18,8 @@ and type-II fibres and changes in vastus lateralis fCSA using a linear-mixed eff
 - Exscidata (dataset)
 - gt (for creating tables)
 - lme4 (modeling LMMs)
+- ggeffects (plotting)
+- patchwork (plotting)
 
 ## Folder structure
 
