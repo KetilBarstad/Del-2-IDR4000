@@ -1,5 +1,5 @@
 ---
-title: "Does baseline myonuclear density in type-I and type-II myofibres predict the hypertrophic response following 6 weeks of resistance training?"
+title: "Is baseline myonuclear density in type-I and type-II myofibres associated with the hypertrophic response following six weeks of resistance training?"
 subtitle: "Exam assignment 2: Study report"
 author: 
 - "Candidate number 201"
@@ -110,7 +110,7 @@ hypertrophy |>
 
 ## Statistical analysis
 
-All statistical analyses were performed using R (version 4.5.1) in Rstudio (version 2026.01.0-392) using a frequentist framework. The *lme4* package was used for statistical modelling. For complete information regarding packages and R-code used, see Del2.qmd and the README files in the [GitHub repository](https://github.com/KetilBarstad/Del-2-IDR4000)
+All statistical analyses were performed using R (version 4.5.1) in Rstudio (version 2026.01.0-392) using a frequentist framework. The *lme4* package was used for statistical modelling. For complete information regarding packages and R-code used, see Del2.qmd and the README files in the [GitHub repository](https://github.com/KetilBarstad/Del-2-IDR4000) (https://github.com/KetilBarstad/Del-2-IDR4000)
 
 **Statistical approach**
 
