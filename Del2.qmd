@@ -95,9 +95,9 @@ hypertrophy |>
   pivot_longer(everything(), names_to = "Variable", values_to = "Value") |>
   mutate(Variable = c("n", "Age (years)", "Height (cm)", "Body mass (kg)", 
                       "Training age (years)", "Baseline Type II fCSA (μm²)", 
-                      "Baseline Type II myonuclei density (nuclei/fiber CSA)",
-                      "Baseline Type I fCSA (μm²)",
-                      "Baseline Type I myonuclei density (nuclei/fiber CSA)")) |>
+"Baseline Type II myonuclei density (nuclei/fiber CSA)",
+"Baseline Type I fCSA (μm²)",
+"Baseline Type I myonuclei density (nuclei/fiber CSA)")) |>
 
   gt() |>
   cols_label(Variable = "Variable", Value = "Mean ± SD") |>
@@ -138,7 +138,7 @@ Our LMMs assume that our residuals are normally distributed around zero and do n
 #| include: false
 
 
-# Reshaping our data to fit FAST model
+# Reshaping our data to fit type-II model
 df_long_fast <- hypertrophy |>
   select(PARTICIPANT, FAST_NUCLEI_T1, FAST_CSA_T1, FAST_CSA_T2, FAST_CSA_T3) |>
   pivot_longer(
@@ -146,13 +146,13 @@ df_long_fast <- hypertrophy |>
     names_to = "timepoint",
     values_to = "fCSA"
   ) |>
-  mutate(time = case_when(
+  mutate(time = case_when(    #Treating time as a numeric factor
     timepoint == "FAST_CSA_T1" ~ 0,
     timepoint == "FAST_CSA_T2" ~ 3,
     timepoint == "FAST_CSA_T3" ~ 6
   ))
 
-# Reshaping our data to fit SLOW  model
+# Reshaping our data to fit type-I model
 df_long_slow <- hypertrophy |>
   select(PARTICIPANT, SLOW_NUCLEI_T1, SLOW_CSA_T1, SLOW_CSA_T2, SLOW_CSA_T3) |>
   pivot_longer(
@@ -160,7 +160,7 @@ df_long_slow <- hypertrophy |>
     names_to = "timepoint",
     values_to = "fCSA"
   ) |>
-  mutate(time = case_when(
+  mutate(time = case_when(      #Treating time as a numeric factor
     timepoint == "SLOW_CSA_T1" ~ 0,
     timepoint == "SLOW_CSA_T2" ~ 3,
     timepoint == "SLOW_CSA_T3" ~ 6
@@ -189,6 +189,7 @@ df_long_slow$resid <- residuals(SLOW)
 SLOW_2 <- lmer(fCSA ~ time * SLOW_NUCLEI_c + (1 | PARTICIPANT),
              data = df_long_slow |> filter(abs(resid) < 1500))
 
+### This data is commented on in Results section regarding sensitivty analysis
 summary(SLOW_2)
 confint(SLOW_2)
 
@@ -202,6 +203,8 @@ confint(SLOW_2)
 #| fig-height: 3
 
 par(mfrow = c(1, 2))
+
+# Residual vs. fitted plots
 
 plot(fitted(FAST), resid(FAST), 
      main = "Type-II fibres", 
@@ -302,7 +305,7 @@ Sensitivity analysis excluding one extreme observation (n = 1 of above 1500 μm�
 #| message: true
 #| warning: false
 #| label: fig-line
-#| fig-cap: "Individual trajectories (grey) and model-predicted trajectories at -1 SD, mean and +1 SD of baseline myonuclear density (colored lines) for fCSA over a 6-week intervention. Type-II (left) and type-I (right)."
+#| fig-cap: "Individual trajectories (grey lines) and model-predicted trajectories at -1 SD, mean and +1 SD of baseline myonuclear density (colored lines) for fCSA over a 6-week intervention. Type-II (left) and type-I (right)."
 #| fig-width: 7
 #| fig-height: 4
 
@@ -311,7 +314,7 @@ Sensitivity analysis excluding one extreme observation (n = 1 of above 1500 μm�
 pred_fast <- ggpredict(FAST, terms = c("time", "FAST_NUCLEI_c [-1, 0, 1]"))
 pred_slow <- ggpredict(SLOW, terms = c("time", "SLOW_NUCLEI_c [-1, 0, 1]"))
 
-# Define shared scales
+# Assigning colors to plot and legend 
 color_scale <- scale_color_manual(
   values = c("-1" = "#E74C3C", "0" = "#27AE60", "1" = "#3498DB"),
   labels = c("-1" = "− 1 SD", "0" = "Mean", "1" = "+ 1 SD")
@@ -350,7 +353,7 @@ plot_fast <- ggplot(df_long_fast, aes(x = time, y = fCSA)) +
   theme_classic() +
   theme(legend.position = "bottom", plot.title = element_text(hjust = 0.5))
 
-# Combine
+# Combined plots
 plot_fast + plot_slow + 
   plot_layout(guides = "collect") & 
   theme(legend.position = "bottom",
