@@ -6,6 +6,7 @@ This is a re-analysis of the data from Haun and colleagues studies from 2018 and
 
 We aimed to analyze the association between baseline myonuclear density in type-I
 and type-II fibres and changes in vastus lateralis fCSA using a linear-mixed effect model (LMM).
+
 ## Necessary programs
 
 - R (version 4.5.1)
@@ -14,12 +15,12 @@ and type-II fibres and changes in vastus lateralis fCSA using a linear-mixed eff
 
 ## R-packages
 
-- Tidyverse (functions, plotting etc.)
-- Exscidata (dataset)
-- gt (for creating tables)
-- lme4 (modeling LMMs)
-- ggeffects (plotting)
-- patchwork (plotting)
+- Tidyverse (v 2.0.0. Use: functions, plotting etc.)
+- Exscidata (v. 0.7. Use: Access dataset). The dataset can also be accessed via the Data folder found within the repo
+- gt (v. 1.1.0. Use: for creating tables)
+- lme4 (v. 1.1-37. Use: modeling LMMs)
+- ggeffects (v. 2.3.2. Use: plotting)
+- patchwork (v. 1.3.2. Use: plotting)
 
 ## Folder structure
 
@@ -35,9 +36,10 @@ Del2/
 ```
 
 ## How to reproduce analysis
-- Clone the repository: `git clone https://github.com/YourUsername/Del2.git`
+- Clone the repository: `git clone https://github.com/KetilBarstad/Del-2-IDR4000.git`
 - Open `Del 2.Rproj` in RStudio
-- Install packages in RStudio: `install.packages(c("tidyverse", "lme4", "gt"))`
+- Install packages in RStudio: `install.packages(c("tidyverse", "lme4", "gt" and so on))`
+- If you wish to install exscidata, run: `devtools::install_github("dhammarstrom/exscidata")`
 - Open `Del2.qmd` and run the chunks in sequential order to re-produce analysis
 
 
